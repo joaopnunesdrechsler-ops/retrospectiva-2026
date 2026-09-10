@@ -11,7 +11,6 @@
       padding: 0;
     }
 
-    /* Fundo Gradiente Vibrante Estilo Anos 80 */
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: linear-gradient(-45deg, #2b1055, #7597de, #ff007f, #00f0ff, #b500ff);
@@ -32,7 +31,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Elementos Neon Flutuantes */
     .particula {
       position: absolute;
       bottom: -60px;
@@ -45,19 +43,12 @@
     }
 
     @keyframes flutuar {
-      0% {
-        transform: translateY(0) rotate(0deg) scale(0.8);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
       10% { opacity: 1; }
       90% { opacity: 1; }
-      100% {
-        transform: translateY(-115vh) rotate(360deg) scale(1.3);
-        opacity: 0;
-      }
+      100% { transform: translateY(-115vh) rotate(360deg) scale(1.3); opacity: 0; }
     }
 
-    /* Título Neon Disco */
     h1 {
       position: absolute;
       top: 25px;
@@ -70,7 +61,6 @@
       z-index: 10;
     }
 
-    /* Container do Slide com Glow Neon */
     .slide-container {
       position: relative;
       width: 88vw;
@@ -88,7 +78,6 @@
       z-index: 5;
     }
 
-    /* Imagem */
     .slide-container img {
       max-width: 95%;
       max-height: 95%;
@@ -102,7 +91,6 @@
       transform: scale(0.96);
     }
 
-    /* Botões Neon Retro */
     .btn {
       position: absolute;
       top: 50%;
@@ -136,7 +124,6 @@
     .btn-prev { left: 20px; }
     .btn-next { right: 20px; }
 
-    /* Contador */
     .contador {
       position: absolute;
       bottom: 18px;
@@ -151,9 +138,38 @@
       text-shadow: 0 0 5px #00f0ff;
       z-index: 10;
     }
+
+    /* Botão Flutuante de Música Neon */
+    .audio-control {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: rgba(15, 5, 29, 0.8);
+      border: 2px solid #00f0ff;
+      color: #ff007f;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 0 15px #00f0ff;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .audio-control:hover {
+      background: #ff007f;
+      color: #fff;
+      box-shadow: 0 0 25px #ff007f;
+    }
   </style>
 </head>
 <body>
+
+  <button class="audio-control" id="btnMusica" onclick="toggleMusica()">🎵 Tocar Música</button>
+  <audio id="musicaFundo" src="midia/musica.mp3" loop></audio>
 
   <div id="particulas-container"></div>
 
@@ -161,11 +177,8 @@
 
   <div class="slide-container">
     <button class="btn btn-prev" onclick="mudarSlide(-1)">&#10094;</button>
-    
     <img id="imagem-slide" src="" alt="Slide Retrospectiva">
-    
     <button class="btn btn-next" onclick="mudarSlide(1)">&#10095;</button>
-
     <div class="contador" id="contador">1 / 90</div>
   </div>
 
@@ -175,12 +188,23 @@
 
     const imgElement = document.getElementById('imagem-slide');
     const contadorElement = document.getElementById('contador');
+    const audio = document.getElementById('musicaFundo');
+    const btnMusica = document.getElementById('btnMusica');
+
+    function toggleMusica() {
+      if (audio.paused) {
+        audio.play();
+        btnMusica.innerText = '⏸️ Pausar Música';
+      } else {
+        audio.pause();
+        btnMusica.innerText = '🎵 Tocar Música';
+      }
+    }
 
     atualizarSlide();
 
     function mudarSlide(direcao) {
       imgElement.classList.add('trocando');
-      
       setTimeout(() => {
         indexAtual += direcao;
         if (indexAtual > totalDeFotos) indexAtual = 1;
@@ -208,16 +232,13 @@
       contadorElement.innerText = `${indexAtual} / ${totalDeFotos}`;
     }
 
-    setInterval(() => {
-      mudarSlide(1);
-    }, 3500);
+    setInterval(() => { mudarSlide(1); }, 3500);
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') mudarSlide(1);
       if (e.key === 'ArrowLeft') mudarSlide(-1);
     });
 
-    // Gerador de Partículas Anos 80
     const particulasContainer = document.getElementById('particulas-container');
     const icones80s = ['✨', '⚡', '🪩', '🌟', '💎'];
 
@@ -230,9 +251,7 @@
       p.style.fontSize = (Math.random() * 1.2 + 1.2) + 'rem';
       particulasContainer.appendChild(p);
 
-      setTimeout(() => {
-        p.remove();
-      }, 8000);
+      setTimeout(() => { p.remove(); }, 8000);
     }
 
     setInterval(criarParticula, 600);
